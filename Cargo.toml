@@ -1,0 +1,27 @@
+[package]
+name = "mongodb-mcp"
+version = "0.1.0"
+edition = "2024"
+description = "MongoDB MCP server in Rust — driver-backed tools over stdio"
+license = "MIT"
+
+[dependencies]
+rmcp = { version = "3.2", features = ["server", "transport-io"] }
+tokio = { version = "1", features = ["macros", "rt-multi-thread", "io-std", "time", "sync"] }
+mongodb = { version = "3.8", default-features = false, features = ["rustls-tls", "bson-3", "compat-3-3-0"] }
+bson = { version = "3", features = ["serde_json-1"] }
+futures = "0.3"
+serde = { version = "1", features = ["derive"] }
+serde_json = { version = "1", features = ["preserve_order"] }
+anyhow = "1"
+thiserror = "2"
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+uuid = { version = "1", features = ["v4"] }
+
+[profile.release]
+opt-level = "z"
+lto = true
+codegen-units = 1
+strip = true
+panic = "abort"
